@@ -1,11 +1,6 @@
-## Solutions for the functions lab
+# Function Exercises
 
 [Lab link](https://github.com/joinpursuit/functions_and_scope_assignment)
-
-
-Original Lab text:
-
-# Function Exercises
 
 ## Question 1
 
