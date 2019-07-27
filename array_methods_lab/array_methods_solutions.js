@@ -46,16 +46,30 @@ console.log(evenAndOdds.filter(n => !(n % 2)))
 // Input: [1,1,1,1,2], Output: false
 
 console.log("==================== 4 ====================")
+console.log("If no output all tests were passed")
 function areAllSame(arr) {
   let element = arr[0]
   return arr.every((currentElement) => {
     return element === currentElement
   })
 }
+
+const areAllSameReduce = (arr) => {
+  let res = arr.reduce((acc, elem) => {
+    if (acc.first !== elem) {
+      acc.same = false
+    }
+    return acc
+  }, {first: arr[0], same: true})
+  return res.same;
+}
+
 let allSame1 = [1,1,1,1,1]
-let allSame2 = [1,1,1,1,2]
-console.log(allSame1, areAllSame(allSame1))
-console.log(allSame2, areAllSame(allSame2))
+let allSame2 = [1,2,1,1,1]
+
+assert.strictEqual(areAllSame(allSame1), areAllSameReduce(allSame1))
+assert.strictEqual(areAllSame(allSame2), areAllSameReduce(allSame2))
+assert.strictEqual(areAllSame([]), areAllSameReduce([]))
 
 // 5. Write a function that returns the sum of every element in an array.
 // Input: [1,2,3,4,5]
