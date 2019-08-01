@@ -51,6 +51,8 @@ function playGame() {
     console.log()
     myGame.logCurrentDisplayWord()
     console.log()
+    console.log(`Guessed letters: ${myGame.guessedLetters}`)
+    console.log()
     myGame.logGuessesRemaining()
     let letter = getValidLetterGuess()
     myGame.makeGuess(letter)
