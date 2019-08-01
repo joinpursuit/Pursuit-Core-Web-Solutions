@@ -30,7 +30,7 @@ class Game {
     this.guessedLetters.push(letter)
     this.guessCount++
     if (this.playerVictory()) {
-      console.log("You win!")
+      console.log(`You win!  You took ${this.guessCount} guesses`)
     } else {
       if (this.guessCount >= this.guessLimit) {
         console.log(`You lose!  The word was ${this.word}`)
