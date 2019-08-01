@@ -65,16 +65,45 @@ runQ5Tests()
 
 // Question Six:
 // Write a function called mode that returns the most frequently occurring number in an array
+// HINT: Use an object where the keys are the numbers, and the values are how many times they appear in the array.
+
+function mode(arr) {
+  let occurrances = {}
+  let maxElem = 0
+  let maxOccurrances = 0
+  for (let val of arr) {
+    if (occurrances[val]) {
+      occurrances[val] += 1
+    } else {
+      occurrances[val] = 1
+    }
+    if (occurrances[val] > maxOccurrances) {
+      maxElem = val
+      maxOccurrances = occurrances[val]
+    }
+  }
+  return maxElem
+}
 
 // Uncomment out the next line to test your solution
-// runQ6Tests()
+runQ6Tests()
 
-// Question Seven:
+// Question Seven: (BONUS)
 // Write a function called median that returns the most median number in an array
 // HINT: You'll need to sort the array first
+// This one's also a bit tricky, feel free to skip it and come back to it.
+
+function median(arr) {
+  let sortedArr = arr.sort((a,b) => a-b)
+  if (sortedArr.length % 2 === 1) {
+    return sortedArr[Math.floor(sortedArr.length / 2)]
+  } else {
+    return (sortedArr[sortedArr.length / 2] + sortedArr[(sortedArr.length / 2) - 1]) / 2
+  }
+}
 
 // Uncomment out the next line to test your solution
-// runQ7Tests()
+runQ7Tests()
 
 // Question Eight:
 // Write a function called addAllStudents that takes in an array of Classroom objects (described below) and returns the total number of students
@@ -85,12 +114,16 @@ runQ5Tests()
 // Sample output:
 // 80
 
+function addAllStudents(objArr) {
+  return objArr.reduce((accum, obj) => accum + obj.numberOfStudents, 0)
+}
+
 // Uncomment out the next line to test your solution
-// runQ8Tests()
+runQ8Tests()
 
 
 // Question Nine:
-// Write a function called getSmallestClassObject that takes in an array of Classroom objects (described below) and returns the object with the least students
+// Write a function called getSmallestClassObject that takes in an array of Classroom objects (described below) and returns the object with the fewest students
 
 // Sample input:
 // [{teacher: "Mr. Smith", numberOfStudents: 28}, {teacher: "Ms. Lopez", numberOfStudents: 32}, {teacher: "Professor McGonagall", numberOfStudents: 20}]
@@ -98,8 +131,10 @@ runQ5Tests()
 // Sample output:
 // {teacher: "Professor McGonagall", numberOfStudents: 20}
 
+const fewestStudents = arr => arr.reduce((minObj, obj) => obj.numberOfStudents < minObj.numberOfStudents ? obj : minObj)
+
 // Uncomment out the next line to test your solution
-// runQ9Tests()
+runQ9Tests()
 
 
 
@@ -108,9 +143,12 @@ runQ5Tests()
 
 // Write a function called doubleAllElements that doubles each number in an array
 // Your function should use a higher-ordered function (e.g map, filter, reduce, every, sort) in its implementation
+// Your output should be in the same order as the input
+
+const doubleAllElements = arr => arr.map(elem => elem * 2)
 
 // Uncomment out the next line to test your solution
-// runQ10Tests()
+runQ10Tests()
 
 
 // Question Eleven:
@@ -119,35 +157,56 @@ runQ5Tests()
 // Your function should use a higher-ordered function (e.g map, filter, reduce, every, sort) in its implementation
 // Your output should be in the same order as the input
 
+const onlyLongStrings = arr => arr.filter(elem => elem.length > 3)
+
 // Uncomment out the next line to test your solution
-// runQ11Tests()
+runQ11Tests()
 
 // Question Twelve:
 
 // Write a function called containsOnlyNumbers that returns whether or not an array contains only numbers
 // Your function should use a higher-ordered function (e.g map, filter, reduce, every, sort) in its implementation
+// Hint: the isNaN() function will tell you whether something is not a number
+
+const containsOnlyNumbers = arr => arr.every(elem => !isNaN(elem * 2))
 
 // Uncomment out the next line to test your solution
-// runQ12Tests()
+runQ12Tests()
 
 // Question Thirteen:
 
 // Make a class called Person that has two properties set by the constructor named age and name
 // Give it a method called isALegalAdult which returns true if the age is at least 18
 
-// runQ13Tests()
+class Person {
+  constructor(age, name) {
+    this.age = age
+    this.name = name
+  }
+  isALegalAdult() {
+    return this.age >= 18
+  }
+}
+
+runQ13Tests()
 
 // Question Fourteen:
 
 // Write a function called getAllAdults that takes in an array of Person objects and returns an array with only Person objects with an age of at least 18
 
-// runQ14Tests()
+function getAllAdults(arr) {
+  return arr.filter(person => person.isALegalAdult())
+}
+
+runQ14Tests()
 
 // Question Fifteen:
 
 // Write a function called getAllNames that takes in an array of Person objects and returns a string with all of the names joined together with a ","
 
-// runQ15Tests()
+const getAllNames = arr => arr.reduce((accum, obj) => accum += `${obj.name},`, "").slice(0, -1)
+
+runQ15Tests()
 
 // The code below is used to test your solutions.  Feel free to look over it, but do not change any of it.
 
@@ -234,9 +293,219 @@ function runQ5Tests() {
 }
 
 function runQ6Tests() {
-
+  let testCases = [
+    new TestCase([1,2,3,4,5,2],2),
+    new TestCase([1,1,1,1,1,1,2],1),
+    new TestCase([1,1,1,1,1,1,2,2,2,2,2,2,2,2,2],2),
+    new TestCase([1],1),
+    new TestCase([1,1,1,2,2,2,1,1],1)
+  ]
+  runTests("Six", testCases, mode)
 }
 
 function runQ7Tests() {
+  let testCases = [
+    new TestCase([2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31], 13),
+    new TestCase([12, 3, 5], 5),
+    new TestCase([3, 13, 7, 5, 21, 23, 39, 23, 40, 23, 14, 12, 56, 23, 29], 23),
+    new TestCase([3, 13, 7, 5, 21, 23, 23, 40, 23, 14, 12, 56, 23, 29], 22),
+    new TestCase([1, 4, 9, 16, 25, 36, 49, 64, 81, 100], 30.5)
+  ]
+  runTests("Seven", testCases, median)
+}
 
+function runQ8Tests() {
+  let testCases = [
+    new TestCase(
+      [
+        {teacher: "Mr. Smith", numberOfStudents: 28},
+        {teacher: "Ms. Lopez", numberOfStudents: 32},
+        {teacher: "Professor McGonagall", numberOfStudents: 20}
+      ], 80
+    ),
+    new TestCase(
+      [
+        {teacher: "Ms. A", numberOfStudents: 30},
+        {teacher: "Ms. B", numberOfStudents: 20},
+        {teacher: "Mr. C", numberOfStudents: 25},
+      ], 75
+    ),
+    new TestCase(
+      [
+        {teacher: "Ms. D", numberOfStudents: 33},
+        {teacher: "Mr. E", numberOfStudents: 10},
+      ], 43
+    ),
+    new TestCase(
+      [
+        {teacher: "Mr. F", numberOfStudents: 1},
+      ], 1
+    )
+  ]
+  runTests("Eight", testCases, addAllStudents)
+}
+
+function runQ9Tests() {
+  let testCases = [
+    new TestCase(
+      [
+        {teacher: "Mr. Smith", numberOfStudents: 28},
+        {teacher: "Ms. Lopez", numberOfStudents: 32},
+        {teacher: "Professor McGonagall", numberOfStudents: 20}
+      ], {teacher: "Professor McGonagall", numberOfStudents: 20}
+    ),
+    new TestCase(
+      [
+        {teacher: "Ms. A", numberOfStudents: 30},
+        {teacher: "Ms. B", numberOfStudents: 20},
+        {teacher: "Mr. C", numberOfStudents: 25},
+      ], {teacher: "Ms. B", numberOfStudents: 20}
+    ),
+    new TestCase(
+      [
+        {teacher: "Ms. D", numberOfStudents: 33},
+        {teacher: "Mr. E", numberOfStudents: 10},
+      ], {teacher: "Mr. E", numberOfStudents: 10}
+    ),
+    new TestCase(
+      [
+        {teacher: "Mr. F", numberOfStudents: 1},
+      ], {teacher: "Mr. F", numberOfStudents: 1}
+    )
+  ]
+  runTests("Nine", testCases, fewestStudents)
+}
+
+function runQ10Tests() {
+  let testCases = [
+    new TestCase(
+      [1,2,3,4,5,6,7],
+      [2,4,6,8,10,12,14]
+    ),
+    new TestCase(
+      [-2,-5,3],
+      [-4,-10,6]
+    ),
+    new TestCase(
+      [1.3,9.1,2.4],
+      [2.6,18.2,4.8]
+    ),
+    new TestCase(
+      [],
+      []
+    ),
+    new TestCase(
+      [0],
+      [0]
+    )
+  ]
+  runTests("Ten", testCases, doubleAllElements)
+}
+
+function runQ11Tests() {
+  let testCases = [
+    new TestCase(
+      ["aaaa", "aa", "a", "aaaaaa"],
+      ["aaaa", "aaaaaa"]
+    ),
+    new TestCase(
+      ["abcd", "       ", ""],
+      ["abcd", "       "]
+    ),
+    new TestCase(
+      [".......", ".", "'''''''"],
+      [".......", "'''''''"]
+    )
+  ]
+  runTests("Eleven", testCases, onlyLongStrings)
+}
+
+function runQ12Tests() {
+  let testCases = [
+    new TestCase(
+      [4, "aaaa", 43, 5, "aa", "a", "aaaaaa"],
+      false
+    ),
+    new TestCase(
+      [3,5,2,56,7,3.9],
+      true
+    ),
+    new TestCase(
+      ["4","453","456789", "484.2"],
+      true
+    ),
+    new TestCase(
+      ["one", "two", "three"],
+      false
+    ),
+    new TestCase(
+      [Infinity, -Infinity, 1000000000, 1e19, 0.000000001],
+      true
+    )
+  ]
+  runTests("Twelve", testCases, containsOnlyNumbers)
+}
+
+function runQ13Tests() {
+  let testCases = [
+    new TestCase(new Person(19, "a"), true),
+    new TestCase(new Person(3, "b"), false),
+    new TestCase(new Person(18, "a"), true),
+    new TestCase(new Person(500, "a"), true),
+    new TestCase(new Person(17, "a"), false),
+  ]
+  runTests("Thirteen", testCases, person => person.isALegalAdult())
+}
+
+function runQ14Tests() {
+  let testCases = [
+    new TestCase( [
+      new Person(19, "a"),
+      new Person(16, "b"),
+      new Person(24, "c"),
+      new Person(18, "d"),
+    ],
+    [
+      new Person(19, "a"),
+      new Person(24, "c"),
+      new Person(18, "d"),
+    ]),
+  new TestCase( [
+    new Person(11, "a"),
+    new Person(16, "b"),
+    new Person(11, "c"),
+    new Person(8, "d"),
+    ],
+    []),
+    new TestCase( [
+      new Person(8, "a"),
+      new Person(16, "b"),
+      new Person(64, "c"),
+      new Person(18, "d"),
+    ],
+    [
+      new Person(64, "c"),
+      new Person(18, "d"),
+    ])
+  ]
+  runTests("Fourteen", testCases, getAllAdults)
+}
+
+function runQ15Tests() {
+  let testCases = [
+    new TestCase( [
+      new Person(19, "Adam"),
+      new Person(16, "Beth"),
+      new Person(24, "Cam"),
+      new Person(18, "Dan"),
+    ], "Adam,Beth,Cam,Dan"),
+    new TestCase( [
+      new Person(99, "Eve"),
+      new Person(1, "Fran"),
+    ], "Eve,Fran"),
+    new TestCase( [
+      new Person(66, "Gene"),
+    ], "Gene"),
+  ]
+  runTests("Fifteen", testCases, getAllNames)
 }
