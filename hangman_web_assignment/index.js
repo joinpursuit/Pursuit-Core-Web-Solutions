@@ -1,4 +1,4 @@
-let hangmanGame = new HangmanGame(7)
+let hangmanGame = new HangmanGame()
 
 document.addEventListener("DOMContentLoaded", () => {
     configureGuessButton()
@@ -6,47 +6,73 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 function configureGuessButton() {
-    let button = document.querySelector("#guessButton")
-    button.addEventListener("click", handleGuessButtonClick)
+    let button = document.querySelector("#form")
+    button.addEventListener("submit", handleFormSubmitted)
 }
 
-function handleGuessButtonClick() {
-    console.log("Button clicked")
+function handleFormSubmitted(event) {    
+    event.preventDefault()
     let displayText = ""
     let inputLetter = getInputText()
-    switch (hangmanGame.guessLetter(inputLetter)) {
-        case HangmanGuessResults.BADINPUT.INVALIDLETTER:
-            displayText = "Invalid letter"
-            break
-        case HangmanGuessResults.BADINPUT.ALREADYGUESSED:
-            displayText = "You've already guessed that letter"
-            break
+    let guessResult = hangmanGame.guessLetter(inputLetter)
+    
+    switch (guessResult) {
         case HangmanGuessResults.GAMEOVER.VICTORY:
-            displayText = "You win!"
-            break
-        case HangmanGuessResults.GAMEOVER.DEFEAT:
-            displayText = "You lose!"
-            document.querySelector("#currentDisplayWord").innerText = hangmanGame.wordToGuess
+            showPlayAgainButton()
+        case HangmanGuessResults.GAMEOVER.DEFEAT:            
+            showPlayAgainButton()
+            updateUI()
             break
         case HangmanGuessResults.CORRECT:
-            displayText = "Correct"
             updateUI()
             break
         case HangmanGuessResults.INCORRECT:
-            displayText = "Incorrect"
             updateUI()
             break
     }    
-    document.querySelector("#gameMessagePara").innerText = displayText
+    document.querySelector("#gameMessagePara").innerText = guessResult    
 }
 
 function getInputText() {
     let letterInput = document.querySelector("#letterInput")
-    return letterInput.value
+    return letterInput.value.toLowerCase()
 }
 
 function updateUI() {
-    document.querySelector("#guessedLettersPara").innerText = hangmanGame.guessedLetters
-    document.querySelector("#currentDisplayWord").innerText = hangmanGame.getDisplayText()
+    console.log("updatingui")
+    let guessedLettersPara = document.querySelector("#guessedLettersPara")
+    if (!hangmanGame.guessedLetters.length) {    
+        guessedLettersPara.innerText = "No guessed letters"
+    } else {
+        guessedLettersPara.innerText = hangmanGame.guessedLetters
+    }    
+
+    if (hangmanGame.guessesRemaining === 0) {
+        document.querySelector("#currentDisplayWord").innerText = hangmanGame.wordToGuess
+    } else {
+        document.querySelector("#currentDisplayWord").innerText = hangmanGame.getDisplayText()
+    }
+
     document.querySelector("#guessesRemainingPara").innerText = hangmanGame.guessesRemaining + " Guesses remaining"
+    document.querySelector("#hangmanImage").src = getImage(hangmanGame.guessesRemaining)
+    document.querySelector("#letterInput").value = ""
+}
+
+function showPlayAgainButton() {
+    let newButton = document.createElement("button")
+    newButton.innerText = "New Game"
+    document.querySelector("#fieldset").disabled = "disabled"
+    newButton.addEventListener('click', () => {
+        hangmanGame = new HangmanGame()
+        updateUI()
+        document.querySelector("#gameMessagePara").innerText = 'Welcome to Hangman'
+        newButton.parentElement.removeChild(newButton)
+        document.querySelector("#fieldset").disabled = undefined
+    })
+    document.querySelector("#form").appendChild(newButton)
+}
+
+function getImage(guessesRemaining) {
+    let imageNum = 10 - guessesRemaining
+    return "https://www.oligalma.com/downloads/images/hangman/hangman/" + imageNum + ".jpg"
 }
