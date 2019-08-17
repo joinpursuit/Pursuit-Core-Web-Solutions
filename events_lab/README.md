@@ -51,7 +51,7 @@ And the following functionalities:
   </details>
 
 ## Sample
-![todos being added to todo list](/todos.gif)
+![todos being added to todo list](./todos.gif)
 
 ## Bonus Tasks
 
