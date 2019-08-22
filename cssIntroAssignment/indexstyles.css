@@ -1,0 +1,27 @@
+body {
+  background: rgb(250,250,255);
+  background: linear-gradient(90deg, rgba(250,250,255,1) 0%, rgba(220,199,236,1) 14%, rgba(253,234,254,1) 43%, rgba(191,229,254,1) 84%, rgba(36,218,255,0.8796973892405063) 100%);
+}
+
+h1 {
+  font-family: monospace;
+}
+
+h3 {
+  text-decoration: underline;
+}
+
+ul {
+  list-style-type: none;
+  font-weight: bolder;
+}
+
+li {
+  /* align-items: center; */
+  align-content: center;
+  align-self: center;
+  align-items: center;  
+  border: solid red;
+  border-radius: 50px;
+  color: blue;
+}
