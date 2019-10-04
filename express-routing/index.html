@@ -2,19 +2,25 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="styles.css">
     <title></title>
   </head>
   <body>
     <h1>Calculator</h1>
-    <input id="numOne" type="number">
-    <select id="operatorSelect">
-      <option value="+">+</option>
-      <option value="-">-</option>
-      <option value="x">x</option>
-      <option value="/">/</option>
-    </select>
-    <input id="numTwo" type="number">
-    <br>
-    <p id="resultPara">Result: </p>
+    <form class="" action="index.html" method="post">
+      <input id="numOne" type="number">
+      <select id="operatorSelect">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="x">x</option>
+        <option value="/">/</option>
+      </select>
+      <input id="numTwo" type="number">
+      <span> = </span>
+      <span id="resultSpan">???</span>
+      <br>
+      <br>
+      <button id="calculateButton">Calculate</button>
+    </form>
   </body>
 </html>
