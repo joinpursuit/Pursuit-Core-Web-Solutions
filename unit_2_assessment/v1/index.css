@@ -1,0 +1,47 @@
+body {
+  width: 70%;
+  max-width: 860px;
+  margin: 0 auto;
+  background-color: lavender;
+  font-family: monospace;
+}
+
+#head {
+  display: flex;
+  height: 150px;
+  align-items: center;
+  justify-content: space-between;
+  background-color: skyblue;
+  padding: 10px;
+  margin-bottom: 30px;
+}
+
+#content {
+  width: 60%;
+  margin: 0 auto;
+}
+
+#review-input {
+  width: 80%;
+}
+
+img {
+  height: 100%;
+}
+
+@media (max-width: 854px) {
+  body {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  #head {
+    height: 15vw;
+    font-size: 2vw;
+  }
+
+  #review-input {
+    width: auto;
+  }
+}
