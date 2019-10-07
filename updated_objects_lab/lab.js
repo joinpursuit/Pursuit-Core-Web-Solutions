@@ -32,11 +32,11 @@ assert(calAndDanAppleCount === 8)
 
 // Your code here
 
-for (key in applesObj) {
+for (let key in applesObj) {
     applesObj[key] = 0
 }
 
-for (key in applesObj) {
+for (let key in applesObj) {
    assert(applesObj[key] === 0)
 }
 
